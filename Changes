@@ -1,0 +1,24 @@
+Revision history for Perl extension WWW::Discogs.
+
+0.01  Tue Jul  1 23:35:00 2008
+	- original version
+
+0.02  Wed Jul  2 09:57:00 2008
+	- bump perl requirement to 5.8
+	- documentation
+
+0.03  Mon Jul  7 15:39:00 2008
+	- use URI path and param methods to construct request
+	- switch to XML::Simple
+	- interface changes
+
+0.04  Wed Jul  9 19:37:00 2008
+	- fix broken test
+	- begin documenting response classes (release, artist,
+	  label, search)
+
+0.05  Sun Jul 13 14:18:00 2008
+	- return lists instead of arrayrefs
+
+0.06  Mon Oct 05 04:29:00 2009
+  - updated tests to pass with new discogs info

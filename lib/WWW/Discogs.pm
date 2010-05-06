@@ -101,7 +101,7 @@ sub search {
 	
 	if ($res->is_success) {
 		my $xml = XMLin($res->content, ForceArray => ['result']);
-		if ($xml->{stat} eq 'ok') {
+		if ($xml->{stat} eq 'ok' && $xml->{searchresults}->{numResults} > 0) {
 			return WWW::Discogs::Search->new(%$xml);
 		}
 	}

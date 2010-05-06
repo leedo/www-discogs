@@ -74,7 +74,15 @@ returns an list of styles
 =cut
 sub styles {
 	my $self = shift;
-	return @{ $self->{styles}{style} };
+	if($self->{styles}{style} && ref($self->{styles}{style}) eq 'ARRAY')
+	{
+		return @{ $self->{styles}{style} };	
+	}
+	else
+	{
+		return $self->{styles}{style};
+	}
+
 }
 
 =head2 released

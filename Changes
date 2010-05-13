@@ -22,3 +22,12 @@ Revision history for Perl extension WWW::Discogs.
 
 0.06  Mon Oct 05 04:29:00 2009
   - updated tests to pass with new discogs info
+
+0.07  Thu Mar 04 00:00:00 2010
+  - updated tests
+
+0.08
+  - fixed death when no search results are returned
+    (squeeks)
+  - Fixing bug #55768 regarding style list not being an
+    array. (squeeks)

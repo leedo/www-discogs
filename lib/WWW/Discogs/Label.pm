@@ -29,7 +29,7 @@ sub name {
 
 =head2 releases
 
-returns an list of releases
+returns a list of releases
 
 =cut
 sub releases {
@@ -39,7 +39,7 @@ sub releases {
 
 =head2 images
 
-Returns an list of images
+Returns a list of images
 
 =cut
 sub images {
@@ -49,7 +49,7 @@ sub images {
 
 =head2 primary_images
 
-Returns an list of the primary images
+Returns a list of the primary images
 
 =cut
 sub primary_images {
@@ -59,7 +59,7 @@ sub primary_images {
 
 =head2 secondary_images
 
-returns an list of the secondary images
+returns a list of the secondary images
 
 =cut
 sub secondary_images {
@@ -79,7 +79,7 @@ sub contactinfo {
 
 =head2 sublabels
 
-returns an list of sublabel names
+returns a list of sublabel names
 
 =cut
 sub sublabels {

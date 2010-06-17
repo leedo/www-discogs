@@ -28,7 +28,7 @@ sub title {
 
 =head2 artists
 
-returns an list of artist names
+returns a list of artist names
 
 =cut
 sub artists {
@@ -39,7 +39,7 @@ sub artists {
 
 =head2 images
 
-Returns an list of images
+Returns a list of images
 
 =cut
 sub images {
@@ -49,7 +49,7 @@ sub images {
 
 =head2 primary_images
 
-Returns an list of the primary images
+Returns a list of the primary images
 
 =cut
 sub primary_images {
@@ -59,7 +59,7 @@ sub primary_images {
 
 =head2 secondary_images
 
-returns an list of the secondary images
+returns a list of the secondary images
 
 =cut
 sub secondary_images {
@@ -69,7 +69,7 @@ sub secondary_images {
 
 =head2 styles
 
-returns an list of styles
+returns a list of styles
 
 =cut
 sub styles {
@@ -90,7 +90,6 @@ sub styles {
 returns the date
 
 =cut
-#TODO make DateTime object
 sub released {
 	my $self = shift;
 	return $self->{released};
@@ -98,7 +97,7 @@ sub released {
 
 =head2 tracklist
 
-returns an list of tracks
+returns a list of tracks
 
 =cut
 sub tracklist {
@@ -108,7 +107,7 @@ sub tracklist {
 
 =head2 extraartists
 
-returns an list of artists
+returns a list of artists
 
 =cut
 sub extraartists {
@@ -118,7 +117,7 @@ sub extraartists {
 
 =head2 genres
 
-returns an list of genre names
+returns a list of genre names
 
 =cut
 sub genres {
@@ -128,7 +127,7 @@ sub genres {
 
 =head2 labels
 
-returns an list of labels
+returns a list of labels
 
 =cut
 sub labels {
@@ -149,7 +148,7 @@ sub country {
 
 =head2 formats
 
-returns an list of formats
+returns a list of formats
 
 =cut
 sub formats {
@@ -169,7 +168,7 @@ sub id {
 
 =head2 notes
 
-returns an list of notes
+returns a list of notes
 
 =cut
 sub notes {

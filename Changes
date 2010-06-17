@@ -31,3 +31,6 @@ Revision history for Perl extension WWW::Discogs.
     (squeeks)
   - Fixing bug #55768 regarding style list not being an
     array. (squeeks)
+
+0.09
+  - fixed typos in POD

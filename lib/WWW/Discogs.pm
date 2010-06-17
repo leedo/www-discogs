@@ -17,7 +17,7 @@ use WWW::Discogs::Label;
 use WWW::Discogs::Search;
 
 use 5.008;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 =head1 NAME
 
@@ -78,6 +78,9 @@ provide an 'apiurl' item to change the url that is queried (default is www.disco
 =cut
 sub new {
 	my ($class, %opts) = @_;
+  if (!$opts{apikey}) {
+    die "apikey parameter is required for WWW::Discogs\n";
+  }
 	my $self = {
 		apiurl	=> $opts{apiurl} || 'http://www.discogs.com',
 		apikey	=> $opts{apikey},

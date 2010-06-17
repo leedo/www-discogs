@@ -20,7 +20,7 @@ WWW::Discogs::Search
 
 =head2 exactresults
 
-returns an list of results that matched exactly
+returns a list of results that matched exactly
 
 =cut
 sub exactresults {
@@ -30,7 +30,7 @@ sub exactresults {
 
 =head2 searchresults
 
-returns an list of normal search results
+returns a list of normal search results
 
 =cut
 sub searchresults {

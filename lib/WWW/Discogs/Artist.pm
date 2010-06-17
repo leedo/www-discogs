@@ -30,7 +30,7 @@ sub name {
 
 =head2 aliases
 
-returns an list of aliases
+returns a list of aliases
 
 =cut
 sub aliases {
@@ -41,7 +41,7 @@ sub aliases {
 
 =head2 namevariations
 
-returns an list of name variations
+returns a list of name variations
 
 =cut
 sub namevariations {
@@ -51,7 +51,7 @@ sub namevariations {
 
 =head2 images
 
-returns an list of images
+returns a list of images
 
 =cut
 sub images {
@@ -61,7 +61,7 @@ sub images {
 
 =head2 primary_images
 
-returns an list of primary images
+returns a list of primary images
 
 =cut
 sub primary_images {
@@ -71,7 +71,7 @@ sub primary_images {
 
 =head2 secondary_images
 
-returns an list of secondary images
+returns a list of secondary images
 
 =cut
 sub secondary_images {
@@ -81,7 +81,7 @@ sub secondary_images {
 
 =head2 releases
 
-returns an list of releases
+returns a list of releases
 
 =cut
 sub releases {

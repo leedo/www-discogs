@@ -21,12 +21,13 @@ for ($artist->releases) {
 	if ($_->{id} == 975091) {
 		is_deeply($_,
 			{
+				artist		=> 'Bill Callahan',
 				format		=> 'CD, Album',
 				status		=> 'Accepted',
 				label		=> 'Drag City',
 				title		=> 'Woke On A Whaleheart',
 				type		=> 'Main',
-				id			=> '975091',
+				id		=> '975091',
 				year		=> '2007'
 			}, 'release');
     last;

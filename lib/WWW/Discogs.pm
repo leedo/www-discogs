@@ -17,7 +17,7 @@ use WWW::Discogs::Label;
 use WWW::Discogs::Search;
 
 use 5.008;
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 =head1 NAME
 

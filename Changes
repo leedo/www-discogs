@@ -34,3 +34,6 @@ Revision history for Perl extension WWW::Discogs.
 
 0.09
   - fixed typos in POD
+
+0.10
+  - fixed test failure in artist response (squeeks)

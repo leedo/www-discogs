@@ -99,7 +99,7 @@ sub _init {
 
 =head2 search( $searchstring )
 
-Returns a L<Discogs::Search> object.
+Returns a L<WWW::Discogs::Search> object.
 
 =cut
 
@@ -122,7 +122,7 @@ sub search {
 
 =head2 release( $release_id )
 
-Returns a L<Discogs::Release> object. You can get a $release_id from a search,
+Returns a L<WWW::Discogs::Release> object. You can get a $release_id from a search,
 artist, or label.
 
 =cut
@@ -149,7 +149,7 @@ sub release {
 
 =head2 artist( $artist_name )
 
-Returns a L<Discogs::Artist> object. You can get the exact name of an artist
+Returns a L<WWW::Discogs::Artist> object. You can get the exact name of an artist
 from a search result's title.
 
 =cut
@@ -170,7 +170,7 @@ sub artist {
 
 =head2 label( $label_name )
 
-Returns a Discogs::Label object. You can get the exact name of a label
+Returns a L<WWW::Discogs::Label> object. You can get the exact name of a label
 from a search result's title.
 
 =cut

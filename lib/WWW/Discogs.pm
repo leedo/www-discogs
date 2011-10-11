@@ -77,16 +77,24 @@ provide an 'apiurl' item to change the url that is queried (default is www.disco
 
 =cut
 sub new {
-	my ($class, %opts) = @_;
-  if (!$opts{apikey}) {
-    die "apikey parameter is required for WWW::Discogs\n";
-  }
-	my $self = {
-		apiurl	=> $opts{apiurl} || 'http://www.discogs.com',
-		apikey	=> $opts{apikey},
-		ua		=> LWP::UserAgent->new,
-	};
-	return bless $self, $class;
+    my ($class, @args) = @_;
+    my $self = {};
+    bless $self, $class;
+    $self->_init(@args);
+    
+    return $self;
+}
+
+sub _init {
+    my ($self, %args) = @_;
+
+    $self->{apiurl} = $args{apiurl} || 'http://api.discogs.com';
+    $self->{ua} = LWP::UserAgent->new;
+    $self->{ua}->default_header(
+        'Accept-Encoding' => 'gzip, deflate',
+        );
+
+    return $self;
 }
 
 =head2 search( $searchstring )

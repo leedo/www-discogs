@@ -14,6 +14,7 @@ inc/Module/Install/WriteAll.pm
 lib/WWW/Discogs.pm
 lib/WWW/Discogs/Artist.pm
 lib/WWW/Discogs/Label.pm
+lib/WWW/Discogs/Master.pm
 lib/WWW/Discogs/Release.pm
 lib/WWW/Discogs/Search.pm
 Makefile.PL

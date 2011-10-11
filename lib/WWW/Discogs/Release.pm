@@ -70,11 +70,18 @@ sub tracklist {
     my ($self) = shift;
 
     if (!wantarray) {
-	my $tracklist;
-	foreach my $track (@{ $self->{tracklist} }) {
-	    $tracklist .= sprintf("%s\n", join("\t", $track->{position}, $track->{title}, $track->{duration}));
-	}
-	return $tracklist;
+        my $tracklist;
+        foreach my $track (@{ $self->{tracklist} }) {
+            $tracklist .= sprintf(
+                "%s\n",
+                join(
+                    "\t",
+                    $track->{position},
+                    $track->{title},
+                    $track->{duration},
+                ));
+        }
+        return $tracklist;
     }
 
     return @{ $self->{tracklist} };
@@ -189,11 +196,11 @@ returns list of images
 sub images {
     my ($self, %args) = @_;
     my $image_type = $args{type};
-    
+
     if ($image_type) {
-	return grep { $_->type =~ /^${image_type}$/i } @{ $self->{images} };
+        return grep { $_->type =~ /^${image_type}$/i } @{ $self->{images} };
     }
-    
+
     return @{ $self->{images} };
 }
 

@@ -41,9 +41,9 @@ sub images {
     my $image_type = $args{type};
 
     if ($image_type) {
-	return grep { $_->{type} =~ /^${image_type}$/i } @{ $self->{images} };
+        return grep { $_->{type} =~ /^${image_type}$/i } @{ $self->{images} };
     }
-    
+
     return @{ $self->{images} };
 }
 

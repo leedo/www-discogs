@@ -20,7 +20,7 @@ returns the ID of the master release
 =cut
 
 sub id {
-    my ($self) = shift;
+    my $self = shift;
     return $self->{id};
 }
 
@@ -30,7 +30,7 @@ returns list of styles
 
 =cut
 sub styles {
-    my ($self) = shift;
+    my $self = shift;
     return @{ $self->{styles} };
 }
 
@@ -40,7 +40,7 @@ returns list of genres
 
 =cut
 sub genres {
-    my ($self) = shift;
+    my $self = shift;
     return @{ $self->{genres} };
 }
 
@@ -50,7 +50,7 @@ returns list of videos
 
 =cut
 sub videos {
-    my ($self) = shift;
+    my $self = shift;
     return @{ $self->{videos} };
 }
 
@@ -60,7 +60,7 @@ returns list of versions
 
 =cut
 sub versions {
-    my ($self) = shift;
+    my $self = shift;
     return @{ $self->{versions} };
 }
 
@@ -70,7 +70,7 @@ returns Discogs ID of the main release
 
 =cut
 sub main_release {
-    my ($self) = shift;
+    my $self = shift;
     return $self->{main_release};
 }
 
@@ -80,7 +80,7 @@ returns notes
 
 =cut
 sub notes {
-    my ($self) = shift;
+    my $self = shift;
     return $self->{notes};
 }
 
@@ -90,7 +90,7 @@ returns list of artists
 
 =cut
 sub artists {
-    my ($self) = shift;
+    my $self = shift;
     return @{ $self->{artists} };
 }
 
@@ -100,7 +100,7 @@ returns year
 
 =cut
 sub year {
-    my ($self) = shift;
+    my $self = shift;
     return $self->{year};
 }
 
@@ -114,29 +114,34 @@ sub images {
     my $image_type = $args{type};
 
     if ($image_type) {
-	return grep { $_->type =~ /^${image_type}$/i } @{ $self->{images} };
+        return grep { $_->type =~ /^${image_type}$/i } @{ $self->{images} };
     }
-    
+
     return @{ $self->{images} };
 }
 
 =head2 tracklist
 
-In list context returns a list of tracks. 
+In list context returns a list of tracks.
 In scalar context returns a formatted tracklist string of the main release.
 
 =cut
 sub tracklist {
-    my ($self) = shift;
+    my $self = shift;
 
     if (!wantarray) {
-	my $tracklist;
-	foreach my $track (@{ $self->{tracklist} }) {
-	    $tracklist .= sprintf("%s\n", join("\t", $track->{title}, $track->{duration}));
-	}
-	return $tracklist;
+        my $tracklist;
+        foreach my $track (@{ $self->{tracklist} }) {
+            $tracklist .= sprintf(
+                "%s\n",
+                join("\t",
+                     $track->{title},
+                     $track->{duration}
+                ));
+        }
+        return $tracklist;
     }
-    
+
     return @{ $self->{tracklist} };
 }
 

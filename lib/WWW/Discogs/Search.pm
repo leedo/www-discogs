@@ -39,7 +39,7 @@ returns the number of results found
 
 =cut
 sub numresults {
-    my ($self) = shift;
+    my $self = shift;
     return $self->{searchresults}->{numResults};
 }
 
@@ -49,9 +49,9 @@ returns the number of pages in search results
 
 =cut
 sub pages {
-    my ($self) = shift;
+    my $self = shift;
     if (!$self->num_results) {
-	return 0;
+        return 0;
     }
     return int($self->num_results / 20) + 1;
 }
@@ -62,7 +62,7 @@ returns the search query
 
 =cut
 sub query {
-    my ($self) = shift;
+    my $self = shift;
     return $self->{_params}->{q};
 }
 
@@ -72,7 +72,7 @@ returns search type
 
 =cut
 sub type {
-    my ($self) = shift;
+    my $self = shift;
     return $self->{_params}->{type};
 }
 
@@ -82,7 +82,7 @@ returns search results' page number
 
 =cut
 sub page {
-    my ($self) = shift;
+    my $self = shift;
     return $self->{_params}->{page};
 }
 
@@ -92,7 +92,7 @@ returns url of search
 
 =cut
 sub url {
-    my ($self) = shift;
+    my $self = shift;
     return $self->{_uri};
 }
 

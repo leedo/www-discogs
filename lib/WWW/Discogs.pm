@@ -36,7 +36,7 @@ images.
 
 	use WWW:Discogs;
 
-	my $client = WWW::Discogs->new(apikey => 1234567);
+	my $client = WWW::Discogs->new;
 
 	# Print all artist images from a search
 	#
@@ -72,8 +72,7 @@ images.
 
 =head2 new( %params )
 
-Create a new instance. Takes a hash which must contain an 'apikey' item. You may also
-provide an 'apiurl' item to change the url that is queried (default is www.discogs.com).
+Create a new instance. You may also provide an 'apiurl' item to change the url that is queried (default is api.discogs.com).
 
 =cut
 sub new {

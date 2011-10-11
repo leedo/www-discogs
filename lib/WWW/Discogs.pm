@@ -65,7 +65,7 @@ images.
 
 =head2 new( %params )
 
-Create a new instance. You may also provide an 'apiurl' item to change the url that is queried (default is api.discogs.com).
+Create a new instance. You may also provide an 'apiurl' item to change the url that is queried (default is http://api.discogs.com).
 
 =cut
 
@@ -190,6 +190,12 @@ from a search result's title.
 
 =cut
 
+=head2 master( id => $master_id )
+
+Returns a L<WWW::Discogs::Master> object. You can get a $master_id from a search or
+release.
+
+=cut
 
 sub _request {
     my ($self, %args) = @_;

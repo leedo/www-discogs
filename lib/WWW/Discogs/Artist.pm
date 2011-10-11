@@ -3,11 +3,6 @@ package WWW::Discogs::Artist;
 use strict;
 use warnings;
 
-sub new {
-	my ($class, %opts) = @_;
-	bless \%opts, $class;
-}
-
 =head1 NAME
 
 WWW::Discogs::Artist - get musician information and images
@@ -24,18 +19,28 @@ returns the name of the artist
 
 =cut
 sub name {
-	my $self = shift;
-	return $self->{name}[0];
+    my $self = shift;
+    return $self->{name};
+}
+
+=head2 realname
+
+returns realname of the artist
+
+=cut
+sub realname {
+    my $self = shift;
+    return $self->{realname};
 }
 
 =head2 aliases
-
+    
 returns a list of aliases
 
 =cut
 sub aliases {
-	my $self = shift;
-	return @{ $self->{aliases}{name} };
+    my $self = shift;
+    return @{ $self->{aliases} };
 }
 
 
@@ -45,38 +50,28 @@ returns a list of name variations
 
 =cut
 sub namevariations {
-	my $self = shift;
-	return @{ $self->{namevariations}{name} };
+    my $self = shift;
+    return @{ $self->{namevariations} };
 }
 
-=head2 images
+=head2 profile
 
-returns a list of images
+returns artist profile
 
 =cut
-sub images {
-	my $self = shift;
-	return @{ $self->{images}{image} };
+sub profile {
+    my $self = shift;
+    return $self->{profile};
 }
 
-=head2 primary_images
+=head2 urls
 
-returns a list of primary images
-
-=cut
-sub primary_images {
-	my $self = shift;
-	return grep {$_->{type} eq 'primary'} @{$self->{images}{image}};
-}
-
-=head2 secondary_images
-
-returns a list of secondary images
+returns a list of urls 
 
 =cut
-sub secondary_images {
-	my $self = shift;
-	return grep {$_->{type} eq 'secondary'} @{$self->{images}{image}};
+sub urls {
+    my $self = shift;
+    return @{ $self->{urls} };
 }
 
 =head2 releases
@@ -85,8 +80,24 @@ returns a list of releases
 
 =cut
 sub releases {
-	my $self = shift;
-	return @{ $self->{releases}{release} };
+    my $self = shift;
+    return @{ $self->{releases} };
+}
+
+=head2 images
+
+returns a list of images.
+
+=cut
+sub images {
+    my ($self, %args) = @_;
+    my $image_type = $args{type};
+
+    if ($image_type) {
+	return grep { $_->{type} =~ /^${image_type}$/i } @{ $self->{images} };
+    }
+    
+    return @{ $self->{images} };
 }
 
 1;

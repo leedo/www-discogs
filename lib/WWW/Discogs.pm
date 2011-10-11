@@ -6,15 +6,8 @@ use warnings;
 use LWP::UserAgent;
 use URI;
 use URI::Escape;
-use URI::QueryParam;
-use Compress::Zlib;
-use XML::Simple;
-use Encode;
-
-use WWW::Discogs::Release;
-use WWW::Discogs::Artist;
-use WWW::Discogs::Label;
-use WWW::Discogs::Search;
+use Carp;
+use JSON::XS;
 
 use 5.008;
 our $VERSION = '0.10';
@@ -75,6 +68,78 @@ images.
 Create a new instance. You may also provide an 'apiurl' item to change the url that is queried (default is api.discogs.com).
 
 =cut
+
+our @namespaces = qw / Artist Release Label Search /;
+
+my %query_params  = ( artist  => { releases => 0, },
+                      release => { },
+                      label   => { releases => 0, },
+                      search  => { type => 'all', 'q' => '', page => '1', },
+    );
+
+for (@namespaces) {
+    my $pkg = __PACKAGE__."::$_";
+    my $name = "\L$_";
+
+    my $namespace = eval qq{
+	use $pkg;
+
+	sub $name {
+	    my (\$self, \%args) = \@_;
+	    
+	    my \$id = \$args{id} || \$args{name} || '';
+
+            my \$query_params = \$self->_get_query_params('$name', \%args);
+
+	    my \$res = \$self->_request(
+		path     => (\$id =~ /^\\s*\$/) ? '$name' : '$name'."/\$id",
+		query    => \$query_params,
+		);
+	    
+	    my \$json = JSON::XS::decode_json( \$res->decoded_content );
+            my \$class_data = \$json->{resp}->{'$name'};
+            \$class_data->{_uri} = \$res->base;
+            \$class_data->{_params} = \$query_params;
+            \$class_data->{_base} = '$name';
+
+	    if (\$json->{resp}->{status} == JSON::XS::true && defined \$json->{resp}->{'$name'}) {
+		return $pkg->new(\%{\$class_data});	
+	    }
+
+            return undef;
+	}
+	
+	package $pkg;
+	sub new {
+	    my (\$class, \%args) = \@_;
+	    my \$self = bless \\\%args, \$class;
+
+	    return \$self;
+	}
+	1;
+    };
+
+    croak "Cannot create namespace $name: $@\n" if not $namespace;
+}
+
+sub _get_query_params {
+    my ($self, $name, %args) = @_;
+    my %params = ();
+
+    for (keys %args) {
+	if (exists $query_params{$name}->{$_}) {
+	    $params{$_} = $args{$_};
+	} else {
+	    delete $args{$_};
+	}
+    }
+
+    %params = ( %{$query_params{$name}}, %params );
+
+    return \%params;
+}
+
+
 sub new {
     my ($class, @args) = @_;
     my $self = {};
@@ -96,121 +161,53 @@ sub _init {
     return $self;
 }
 
-=head2 search( $searchstring )
+=head2 search( q => $searchstring )
 
 Returns a L<WWW::Discogs::Search> object.
 
 =cut
 
-sub search {
-	my ($self, $query, $type) = @_;
-	my $res = $self->_request('search', {
-		q		=> $query,
-		type	=> $type || 'all',
-	});
-	
-	if ($res->is_success) {
-		my $xml = XMLin($res->content, ForceArray => ['result']);
-		if ($xml->{stat} eq 'ok' && $xml->{searchresults}->{numResults} > 0) {
-			return WWW::Discogs::Search->new(%$xml);
-		}
-	}
-
-	return undef;
-}
-
-=head2 release( $release_id )
+=head2 release( id => $release_id )
 
 Returns a L<WWW::Discogs::Release> object. You can get a $release_id from a search,
 artist, or label.
 
 =cut
 
-sub release {
-	my ($self, $release) = @_;
-	if ($release =~ /^\d+$/) {
-		my $res = $self->_request("release/" . uri_escape($release));
-		if ($res->is_success) {
-			my $xml = XMLin($res->content, ForceArray => [ 
-				'image',		'style',	'track',
-				'format',		'note',		'description',
-				'extraartist',	'genre',	'artist',
-				'label',
-			],KeyAttr => []);
-			if ($xml->{stat} eq 'ok' and exists $xml->{release}) {
-				return WWW::Discogs::Release->new(%{$xml->{release}});
-			}
-		}
-	}
-	
-	return undef;
-}
-
-=head2 artist( $artist_name )
+=head2 artist( name => $artist_name )
 
 Returns a L<WWW::Discogs::Artist> object. You can get the exact name of an artist
 from a search result's title.
 
 =cut
 
-sub artist {
-	my ($self, $artist) = @_;
-	my $res = $self->_request("artist/" . uri_escape($artist));
-	if ($res->is_success) {
-		my $xml = XMLin($res->content,
-			ForceArray => ['image','name'], KeyAttr => ['name']);
-		if ($xml->{stat} eq 'ok' and exists $xml->{artist}) {
-			return WWW::Discogs::Artist->new(%{$xml->{artist}});
-		}
-	}
-
-	return undef;
-}
-
-=head2 label( $label_name )
+=head2 label( name => $label_name )
 
 Returns a L<WWW::Discogs::Label> object. You can get the exact name of a label
 from a search result's title.
 
 =cut
 
-sub label {
-	my ($self, $label) = @_;
-	my $res = $self->_request("label/" . uri_escape($label));
-	if ($res->is_success) {
-		my $xml = XMLin($res->content, ForceArray => [
-			'release','image','sublabels'], KeyAttr => ['label']);
-		if ($xml->{stat} eq 'ok' and exists $xml->{label}) {
-			return WWW::Discogs::Label->new(%{$xml->{label}});
-		}
-	}
-	
-	return undef;
-}
 
 sub _request {
-	my ($self, $path, $params) = @_;
-	my $url = $self->_create_url($path,$params);
-	my $res = $self->{ua}->get($url, 'Accept-Encoding' => 'gzip');
-	if ($res->is_success) {
-		if ($res->content_encoding and $res->content_encoding eq 'gzip') {
-			$res->content(Compress::Zlib::memGunzip( $res->content ));
-		}
-	}
-	return $res;
-}
-
-sub _create_url {
-	my ($self, $path, $params) = @_;
-
-	$params->{f} = 'xml';
-	$params->{api_key} = $self->{apikey};
-
-	my $uri = URI->new($self->{apiurl},"http");
-	$uri->path($path);
-	$uri->query_form_hash($params);
-
-	return $uri->canonical->as_string;
+    my ($self, %args) = @_;
+    my $path  = $args{path};
+    my $query = $args{query};
+    
+    my $uri = URI->new(
+	$self->{'apiurl'},
+	'http',
+	);
+    $uri->path($path);
+    $uri->query_form($query) if keys %{$query};
+    
+    my $url = $uri->canonical->as_string;
+    my $res = $self->{ua}->get($url);
+    
+    croak join("\n", "Request to $url failed: ", $res->status_line, Dumper($res))
+	unless $res->is_success;
+    
+    return $res;
 }
 
 =head1 AUTHOR

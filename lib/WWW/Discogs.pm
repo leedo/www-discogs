@@ -69,12 +69,14 @@ Create a new instance. You may also provide an 'apiurl' item to change the url t
 
 =cut
 
-our @namespaces = qw / Artist Release Label Search /;
+our @namespaces = qw ( Artist Release Label Search Master );
 
-my %query_params  = ( artist  => { releases => 0, },
-                      release => { },
-                      label   => { releases => 0, },
-                      search  => { type => 'all', 'q' => '', page => '1', },
+my %query_params  = ( 
+    artist  => { releases => 0, },
+    release => { },
+    label   => { releases => 0, },
+    search  => { type => 'all', 'q' => '', page => '1', },
+    master  => { },
     );
 
 for (@namespaces) {

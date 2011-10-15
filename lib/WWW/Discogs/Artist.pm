@@ -5,16 +5,6 @@ use warnings;
 use NEXT;
 use base qw( WWW::Discogs::HasMedia );
 
-=head1 NAME
-
-WWW::Discogs::Artist - get musician information and images
-
-=cut
-
-=head1 METHODS
-
-=cut
-
 sub new {
     my ($class, @args) = @_;
 
@@ -41,75 +31,41 @@ sub _init {
     return $self;
 }
 
-=head2 name
-
-returns the name of the artist
-
-=cut
 sub name {
     my $self = shift;
     return $self->{_name};
 }
 
-=head2 realname
-
-returns realname of the artist
-
-=cut
 sub realname {
     my $self = shift;
     return $self->{_realname};
 }
 
-=head2 aliases
-
-returns a list of aliases
-
-=cut
 sub aliases {
     my $self = shift;
     return @{ $self->{_aliases} };
 }
 
-
-=head2 namevariations
-
-returns a list of name variations
-
-=cut
 sub namevariations {
     my $self = shift;
     return @{ $self->{_namevariations} };
 }
 
-=head2 profile
-
-returns artist profile
-
-=cut
 sub profile {
     my $self = shift;
     return $self->{_profile};
 }
 
-=head2 urls
-
-returns a list of urls
-
-=cut
 sub urls {
     my $self = shift;
     return @{ $self->{_urls} };
 }
 
-=head2 releases
-
-returns a list of releases
-
-=cut
 sub releases {
     my $self = shift;
     return @{ $self->{_releases} };
 }
 
 1;
+
+__END__

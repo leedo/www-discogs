@@ -3,6 +3,7 @@ package WWW::Discogs::ReleaseBase;
 use strict;
 use warnings;
 use Carp;
+use base qw( WWW::Discogs::HasMedia );
 
 sub new {
     my ($class, @args) = @_;
@@ -19,7 +20,6 @@ sub _init {
     $self->{_notes}        = $args{notes}        || '';
     $self->{_styles}       = $args{styles}       || [];
     $self->{_genres}       = $args{genres}       || [];
-    $self->{_images}       = $args{images}       || [];
     $self->{_artists}      = $args{artists}      || [];
     $self->{_extraartists} = $args{extraartists} || [];
     $self->{_tracklist}    = $args{tracklist}    || [];
@@ -52,17 +52,6 @@ sub styles {
 sub genres {
     my $self = shift;
     return @{ $self->{_genres} };
-}
-
-sub images {
-    my ($self, %args) = @_;
-    my $image_type = $args{type};
-
-    if ($image_type) {
-        return grep { $_->type =~ /^${image_type}$/i } @{ $self->{_images} };
-    }
-
-    return @{ $self->{_images} };
 }
 
 sub artists {

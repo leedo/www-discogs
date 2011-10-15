@@ -2,6 +2,8 @@ package WWW::Discogs::Label;
 
 use strict;
 use warnings;
+use NEXT;
+use base qw( WWW::Discogs::HasMedia );
 
 =head1 NAME
 
@@ -16,7 +18,7 @@ sub new {
 
     my $self = {};
     bless $self, $class;
-    $self->_init(@args);
+    $self->EVERY::LAST::_init(@args);
 
     return $self;
 }
@@ -29,7 +31,6 @@ sub _init {
     $self->{_parentLabel} = $args{parentLabel} || '';
     $self->{_releases}    = $args{releases}    || [];
     $self->{_sublabels}   = $args{sublabels}   || [];
-    $self->{_images}      = $args{images}      || [];
     $self->{_params}      = $args{_params}     || {};
     $self->{_uri}         = $args{_uri}        || '';
 
@@ -54,22 +55,6 @@ returns a list of releases
 sub releases {
     my $self = shift;
     return @{ $self->{_releases} };
-}
-
-=head2 images
-
-Returns a list of images
-
-=cut
-sub images {
-    my ($self, %args) = @_;
-    my $image_type = $args{type};
-
-    if ($image_type) {
-        return grep { $_->{type} =~ /^${image_type}$/i } @{ $self->{_images} };
-    }
-
-    return @{ $self->{_images} };
 }
 
 =head2 contactinfo

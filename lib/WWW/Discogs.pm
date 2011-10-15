@@ -102,7 +102,6 @@ for (@namespaces) {
             my \$class_data = \$json->{resp}->{'$name'};
             \$class_data->{_uri} = \$res->base;
             \$class_data->{_params} = \$query_params;
-            \$class_data->{_base} = '$name';
 
             if (\$json->{resp}->{status} == JSON::XS::true &&
                 defined \$json->{resp}->{'$name'}) {
@@ -112,13 +111,6 @@ for (@namespaces) {
             return undef;
         }
 
-        package $pkg;
-        sub new {
-            my (\$class, \%args) = \@_;
-            my \$self = bless \\\%args, \$class;
-
-            return \$self;
-        }
         1;
     };
 

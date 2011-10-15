@@ -2,6 +2,8 @@ package WWW::Discogs::Master;
 
 use strict;
 use warnings;
+use NEXT;
+use base qw ( WWW::Discogs::ReleaseBase );
 
 =head1 NAME
 
@@ -13,45 +15,23 @@ WWW::Discogs::Master - get master release information and images
 
 =cut
 
-=head2 id
+sub new {
+    my ($class, @args) = @_;
 
-returns the ID of the master release
+    my $self = {};
+    bless $self, $class;
+    $self->EVERY::LAST::_init(@args);
 
-=cut
-
-sub id {
-    my $self = shift;
-    return $self->{id};
+    return $self;
 }
 
-=head2 styles
+sub _init {
+    my ($self, %args) = @_;
 
-returns list of styles
+    $self->{_versions}     = $args{versions}     || [];
+    $self->{_main_release} = $args{main_release} || '';
 
-=cut
-sub styles {
-    my $self = shift;
-    return @{ $self->{styles} };
-}
-
-=head2 genres
-
-returns list of genres
-
-=cut
-sub genres {
-    my $self = shift;
-    return @{ $self->{genres} };
-}
-
-=head2 videos
-
-returns list of videos
-
-=cut
-sub videos {
-    my $self = shift;
-    return @{ $self->{videos} };
+    return $self;
 }
 
 =head2 versions
@@ -61,7 +41,7 @@ returns list of versions
 =cut
 sub versions {
     my $self = shift;
-    return @{ $self->{versions} };
+    return @{ $self->{_versions} };
 }
 
 =head2 main_release
@@ -71,53 +51,7 @@ returns Discogs ID of the main release
 =cut
 sub main_release {
     my $self = shift;
-    return $self->{main_release};
-}
-
-=head2 notes
-
-returns notes
-
-=cut
-sub notes {
-    my $self = shift;
-    return $self->{notes};
-}
-
-=head2 artists
-
-returns list of artists
-
-=cut
-sub artists {
-    my $self = shift;
-    return @{ $self->{artists} };
-}
-
-=head2 year
-
-returns year
-
-=cut
-sub year {
-    my $self = shift;
-    return $self->{year};
-}
-
-=head2 images
-
-returns list of images
-
-=cut
-sub images {
-    my ($self, %args) = @_;
-    my $image_type = $args{type};
-
-    if ($image_type) {
-        return grep { $_->type =~ /^${image_type}$/i } @{ $self->{images} };
-    }
-
-    return @{ $self->{images} };
+    return $self->{_main_release};
 }
 
 =head2 tracklist
@@ -131,7 +65,7 @@ sub tracklist {
 
     if (!wantarray) {
         my $tracklist;
-        foreach my $track (@{ $self->{tracklist} }) {
+        foreach my $track (@{ $self->{_tracklist} }) {
             $tracklist .= sprintf(
                 "%s\n",
                 join("\t",
@@ -142,7 +76,7 @@ sub tracklist {
         return $tracklist;
     }
 
-    return @{ $self->{tracklist} };
+    return @{ $self->{_tracklist} };
 }
 
 1;

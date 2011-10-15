@@ -13,6 +13,33 @@ WWW::Discogs::Artist - get musician information and images
 
 =cut
 
+sub new {
+    my ($class, @args) = @_;
+
+    my $self = {};
+    bless $self, $class;
+    $self->_init(@args);
+
+    return $self;
+}
+
+sub _init {
+    my ($self, %args) = @_;
+
+    $self->{_name}           = $args{name}           || '';
+    $self->{_realname}       = $args{realname}       || '';
+    $self->{_profile}        = $args{profile}        || '';
+    $self->{_aliases}        = $args{aliases}        || [];
+    $self->{_namevariations} = $args{namevariations} || [];
+    $self->{_urls}           = $args{urls}           || [];
+    $self->{_releases}       = $args{releases}       || [];
+    $self->{_images}         = $args{images}         || [];
+    $self->{_params}         = $args{_params}        || {};
+    $self->{_uri}            = $args{_uri}           || '';
+
+    return $self;
+}
+
 =head2 name
 
 returns the name of the artist
@@ -20,7 +47,7 @@ returns the name of the artist
 =cut
 sub name {
     my $self = shift;
-    return $self->{name};
+    return $self->{_name};
 }
 
 =head2 realname
@@ -30,7 +57,7 @@ returns realname of the artist
 =cut
 sub realname {
     my $self = shift;
-    return $self->{realname};
+    return $self->{_realname};
 }
 
 =head2 aliases
@@ -40,7 +67,7 @@ returns a list of aliases
 =cut
 sub aliases {
     my $self = shift;
-    return @{ $self->{aliases} };
+    return @{ $self->{_aliases} };
 }
 
 
@@ -51,7 +78,7 @@ returns a list of name variations
 =cut
 sub namevariations {
     my $self = shift;
-    return @{ $self->{namevariations} };
+    return @{ $self->{_namevariations} };
 }
 
 =head2 profile
@@ -61,7 +88,7 @@ returns artist profile
 =cut
 sub profile {
     my $self = shift;
-    return $self->{profile};
+    return $self->{_profile};
 }
 
 =head2 urls
@@ -71,7 +98,7 @@ returns a list of urls
 =cut
 sub urls {
     my $self = shift;
-    return @{ $self->{urls} };
+    return @{ $self->{_urls} };
 }
 
 =head2 releases
@@ -81,7 +108,7 @@ returns a list of releases
 =cut
 sub releases {
     my $self = shift;
-    return @{ $self->{releases} };
+    return @{ $self->{_releases} };
 }
 
 =head2 images
@@ -94,10 +121,10 @@ sub images {
     my $image_type = $args{type};
 
     if ($image_type) {
-        return grep { $_->{type} =~ /^${image_type}$/i } @{ $self->{images} };
+        return grep { $_->{type} =~ /^${image_type}$/i } @{ $self->{_images} };
     }
 
-    return @{ $self->{images} };
+    return @{ $self->{_images} };
 }
 
 1;

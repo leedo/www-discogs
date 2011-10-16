@@ -217,12 +217,12 @@ from a search result's title.
 
 =item $search->exactresults
 
-Returns list of hash references containing results exactly matching search
+Returns list of hashes containing results exactly matching search
 query.
 
 =item $search->searchresults
 
-Returns list of hash references containing search results.
+Returns list of hashes containing search results.
 
 =item $search->numresults
 
@@ -239,7 +239,120 @@ results.
 
 =over
 
-=item
+=item $release->id
+
+Returns release ID.
+
+=item $release->title
+
+Returns title of the release.
+
+=item $release->images
+
+=item $release->images( type => $image_type )
+
+Returns a list of hashes containing information about images for a release.
+C< $image_type > can be one of 'primary' or 'secondary'. See example below:
+
+  use WWW::Discogs;
+  
+  my $client = WWW::Discogs->new;
+  my $release = $client->release(id => 797674);
+  
+  for my $img ( $release->images(type => 'primary') ) {
+      printf("%3d x %3d - %s\n", $img->{width}, $img->{height}, $img->{uri});
+  }
+
+Prints:
+
+  600 x 525 - http://api.discogs.com/image/R-797674-1309319643.jpeg
+
+=item $release->released
+
+Returns release date in ISO 8601 format (YYYY-MM-DD). 
+
+=item $release->released_formatted
+
+=item $release->labels
+
+Returns a list of hashes containing labels information. See example below:
+
+  use WWW::Discogs;
+  
+  my $client = WWW::Discogs->new;
+  my $release = $client->release(id => 797674);
+  
+  for my $label ($release->labels) {
+      printf("%s - %s\n", $label->{name}, $label->{catno})
+  }
+
+Prints:
+
+  Poker Flat Recordings - PFRCD18
+  Rough Trade Arvato - RTD 586.1018.2
+
+=item $release->country
+
+=item $release->formats
+
+Returns a list of hashes containing formats information. See example below:
+
+  use WWW::Discogs;
+  
+  my $client = WWW::Discogs->new;
+  my $release = $client->release(id => 797674);
+  
+  for my $format ($release->formats) {
+      printf("%d x %s, %s\n",
+             $format->{qty},
+             $format->{name},
+             join(", ", @{ $format->{descriptions } },
+             )
+          );
+  }
+
+Prints:
+
+ 1 x CD, Album, Partially Mixed
+ 1 x CD, Compilation, Limited Edition
+
+=item $release->status
+
+Returns status.
+
+=item $release->master_id
+
+Returns master release ID associated with a release. 
+
+=item $release->year
+
+Returns release year.
+
+=item $release->notes
+
+Returns release notes.
+
+=item $release->styles
+
+Returns a list of styles.
+
+=item $release->genres
+
+Returns a list of genres.
+
+=item $release->artists
+
+Returns a list of hashes containing artists information.
+
+=item $release->extraartists
+
+Returns a list of hashes containing extra artists information.
+
+=item $release->tracklist
+
+Returns tracklist.
+
+
 
 =back
 
@@ -283,7 +396,7 @@ Returns a list of site's URLs linked to the artist.
 
 If $client->artist method creating a new C<WWW::Discogs::Artist> object was
 called with C<< releases => 1 >> parameter you can get the list of artist's
-releases by calling this method. The result will be a list of hash references
+releases by calling this method. The result will be a list of hashes
 containing releases/master releases information. See example below:
 
   use WWW::Discogs;

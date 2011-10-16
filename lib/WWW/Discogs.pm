@@ -132,7 +132,7 @@ WWW::Discogs - get music related information and images
 
 =head1 DESCRIPTION
 
-Interface with discogs.com api to get music related information and
+Interface with www.discogs.com API to get music related information and
 images.
 
 =cut
@@ -172,31 +172,84 @@ images.
 
 =head1 METHODS
 
-=head2 search( q => $searchstring )
+=head2 search( q => $search_string )
 
-Returns a C<WWW::Discogs::Search> object.
+=head2 search( q => $search_string, type => $search_type )
+
+=head2 search( q => $search_string, type => $search_type, page => $page )
+
+Returns a C<WWW::Discogs::Search> object. If you want to narrow down search
+results then provide C<$search_type> which can be one of 'all' (the default),
+'releases' (also returns masters), 'artists' or 'labels'.
+Search results are paginated (20 results per page) and default is
+C<< page => 1 >>. You can check how many search results pages are there by
+calling C<pages> method on C<WWW::Discogs::Search> object.
 
 =head2 release( id => $release_id )
 
 Returns a C<WWW::Discogs::Release> object. You can get a $release_id from a
 search, artist, or label.
 
+=head2 master( id => $master_id )
+
+Returns a C<WWW::Discogs::Master> object. You can get a $master_id from a
+search or release.
+
 =head2 artist( name => $artist_name )
+
+=head2 artist( name => $artist_name, releases => 1 )
 
 Returns a C<WWW::Discogs::Artist> object. You can get the exact name of an
 artist from a search result's title.
 
 =head2 label( name => $label_name )
 
+=head2 label( name => $label_name, releases => 1 )
+
 Returns a C<WWW::Discogs::Label> object. You can get the exact name of a label
 from a search result's title.
 
-=head2 master( id => $master_id )
+=head1 OBJECTS CREATED AND THEIR METHODS
 
-Returns a C<WWW::Discogs::Master> object. You can get a $master_id from a
-search or release.
+=head2 WWW::Discogs::Search
 
-=head1 REQUEST RESULT TYPES
+=over
+
+=item $search->exactresults
+
+Returns list of hash references containing results exactly matching search
+query.
+
+=item $search->searchresults
+
+Returns list of hash references containing search results.
+
+=item $search->numresults
+
+Returns a number of search results (counted without exact results).
+
+=item $search->pages
+
+Returns number of search results' pages. Each page contains max 20 search
+results.
+
+=back
+
+=head2 WWW::Discogs::Release
+
+=over
+
+=item
+
+=back
+
+=head2 WWW::Discogs::Master 
+
+=over
+
+=item
+
+=back
 
 =head2 WWW::Discogs::Artist
 
@@ -269,9 +322,13 @@ this structure as results differ depending on artist's role and release type.
 
 =back
 
-=head1 AUTHOR
+=head2 WWW::Discogs::Label
 
-Lee Aylward <lee@laylward.com>
+=over
+
+=item
+
+=back
 
 =head1 LICENSE
 

@@ -133,42 +133,12 @@ WWW::Discogs - get music related information and images
 =head1 DESCRIPTION
 
 Interface with www.discogs.com API to get music related information and
-images.
+images. Discogs is a user-built database containing information on artists, 
+labels, and their recordings.
 
 =cut
 
 =head1 SYNOPSIS
-
-    use WWW:Discogs;
-
-    my $client = WWW::Discogs->new;
-
-    # Print all artist images from a search
-    #
-    my $search = $client->search("Ween");
-
-    for my $result ($search->exactresults) {
-    if ($result->{type} eq 'artist') {
-            my $artist = $client->artist( $result->{title} );
-            print $artist->name . "\n";
-            if ($artist->images) {
-                print join "\n", $artist->images;
-            }
-        }
-    }
-
-    # Print all the album covers for an artist
-    #
-    my $artist = $client->artist("Ween");
-    for my ($artist->releases) {
-        my $release = $client->release($_->{id});
-        if ($release->images) {
-            print $release->title . "\n";
-            if ($release->primaryimages) {
-                print join "\n", $release->primaryimages;
-            }
-        }
-    }
 
 =head1 METHODS
 
@@ -213,16 +183,18 @@ from a search result's title.
 
 =head2 WWW::Discogs::Search
 
+TODO: search example
+
 =over
 
 =item $search->exactresults
 
-Returns list of hashes containing results exactly matching search
+Returns list of hash references containing results exactly matching search
 query.
 
 =item $search->searchresults
 
-Returns list of hashes containing search results.
+Returns list of hash references containing search results.
 
 =item $search->numresults
 
@@ -251,8 +223,8 @@ Returns title of the release.
 
 =item $release->images( type => $image_type )
 
-Returns a list of hashes containing information about images for a release.
-C< $image_type > can be one of 'primary' or 'secondary'. See example below:
+Returns a list of hash references containing information about images for a
+release. C< $image_type > can be one of 'primary' or 'secondary'. See example below:
 
   use WWW::Discogs;
   
@@ -273,9 +245,12 @@ Returns release date in ISO 8601 format (YYYY-MM-DD).
 
 =item $release->released_formatted
 
+Returns formatted release date ('06 Oct 2006', 'Mar 2006' etc.)
+
 =item $release->labels
 
-Returns a list of hashes containing labels information. See example below:
+Returns a list of hash references containing labels information.
+See example below:
 
   use WWW::Discogs;
   
@@ -283,7 +258,7 @@ Returns a list of hashes containing labels information. See example below:
   my $release = $client->release(id => 797674);
   
   for my $label ($release->labels) {
-      printf("%s - %s\n", $label->{name}, $label->{catno})
+      printf("%s - %s\n", $label->{name}, $label->{catno});
   }
 
 Prints:
@@ -293,9 +268,12 @@ Prints:
 
 =item $release->country
 
+Returns country.
+
 =item $release->formats
 
-Returns a list of hashes containing formats information. See example below:
+Returns a list of hash references containing formats information.
+See example below:
 
   use WWW::Discogs;
   
@@ -306,8 +284,7 @@ Returns a list of hashes containing formats information. See example below:
       printf("%d x %s, %s\n",
              $format->{qty},
              $format->{name},
-             join(", ", @{ $format->{descriptions } },
-             )
+             join(", ", @{ $format->{descriptions } }),
           );
   }
 
@@ -342,25 +319,116 @@ Returns a list of genres.
 
 =item $release->artists
 
-Returns a list of hashes containing artists information.
+Returns a list of hash references containing artists information.
+
+TODO: example
 
 =item $release->extraartists
 
-Returns a list of hashes containing extra artists information.
+Returns a list of hash references containing extra artists information.
+
+TODO: example
 
 =item $release->tracklist
 
 Returns tracklist.
 
-
+TODO: document!
 
 =back
 
-=head2 WWW::Discogs::Master 
+=head2 WWW::Discogs::Master
 
 =over
 
-=item
+=item $master->id
+
+Returns master ID.
+
+=item $master->main_release
+
+Returns main release ID.
+
+=item $master->versions
+
+Returns a list of hash references containing versions information. See example
+below:
+
+  use WWW::Discogs;
+  
+  my $client = WWW::Discogs->new;
+  my $master = $client->master(id => 104330);
+  
+  for my $version ( $master->versions ) {
+      printf("%9d %7s %15s %18s %7s %15s\n",
+             $version->{id}, $version->{country}, $version->{title},
+             $version->{format}, $version->{catno}, $version->{label});
+  }
+
+
+Prints:
+
+   116934  Sweden   Chaos & Order          CD, Album  HPCD20 H. Productions
+    11168  Sweden   Chaos & Order        2xLP, Album  HPLP20 H. Productions
+  2307050  Sweden   Chaos & Order 2xLP, Album, W/Lbl  HPLP20 H. Productions
+
+Other available keys in C<< $version >> besides the ones in example above are
+C<< $version->{status} >> and C<< $version->{released} >>.
+
+=item $master->images
+
+=item $master->images( type => $image_type )
+
+Returns a list of hash references containing information about images for
+a release. C< $image_type > can be one of 'primary' or 'secondary'.
+See example below:
+
+  use WWW::Discogs;
+  
+  my $client = WWW::Discogs->new;
+  my $master = $client->master(id => 23992);
+  
+  for my $img ( $master->images(type => 'primary') ) {
+      printf("%3d x %3d - %s\n", $img->{width}, $img->{height}, $img->{uri});
+  }
+
+Prints:
+
+  600 x 600 - http://api.discogs.com/image/R-830189-1265162680.jpeg
+
+=item $master->year
+
+Returns release year.
+
+=item $master->notes
+
+Returns release notes.
+
+=item $master->styles
+
+Returns a list of styles.
+
+=item $master->genres
+
+Returns a list of genres.
+
+=item $master->artists
+
+Returns a list of hash references containing artists information.
+
+TODO: example
+
+=item $master->extraartists
+
+Returns a list of hash references containing extra artists information.
+
+TODO: example
+
+=item $master->tracklist
+
+Returns tracklist.
+
+TODO: document!
 
 =back
 
@@ -370,7 +438,7 @@ Returns tracklist.
 
 =item $artist->name
 
-Returns artist's name.
+Returns artist name.
 
 =item $artist->realname
 
@@ -396,7 +464,7 @@ Returns a list of site's URLs linked to the artist.
 
 If $client->artist method creating a new C<WWW::Discogs::Artist> object was
 called with C<< releases => 1 >> parameter you can get the list of artist's
-releases by calling this method. The result will be a list of hashes
+releases by calling this method. The result will be a list of hash references
 containing releases/master releases information. See example below:
 
   use WWW::Discogs;
@@ -439,7 +507,48 @@ this structure as results differ depending on artist's role and release type.
 
 =over
 
-=item
+=item $label->name
+
+Returns label's name.
+
+=item $label->releases
+
+If $client->label method creating a new C<WWW::Discogs::Label> object was
+called with C<< releases => 1 >> parameter you can get the list of label's
+releases by calling this method. The result will be a list of hash references
+containing releases information. See example below:
+
+  use WWW::Discogs;
+  
+  my $client = WWW::Discogs->new;
+  my $label = $client->label(name => 'Southsoul Appendix', releases => 1);
+  
+  for my $r ($label->releases) {
+      printf("%8d %11s %25s %10s %s\n", 
+             $r->{id}, $r->{catno}, $r->{artist}, $r->{title}, $r->{format});
+  }
+
+Prints:
+
+    31391 SUDAPPX 001               Markantonio Appendix A 12"
+    31392 SUDAPPX 002          Davide Squillace Appendix B 12"
+    33698 SUDAPPX 003              Marco Carola Appendix C 12"
+    75142 SUDAPPX 004           Danilo Vigorito Appendix D 12"
+  2281344 SUDAPPX 004           Danilo Vigorito Appendix D 12", W/Lbl, Sti
+   176859 SUDAPPX 005     Adam Beyer & Henrik B Appendix E 12"
+   332559 SUDAPPX 006           Carola Pisaturo Appendix F 12"
+
+=item $label->contactinfo
+
+Returns contact info to the label.
+
+=item $label->sublabels
+
+Returns a list containing names of sublabels.
+
+=item $label->parentlabel
+
+Returns the name of parent label.
 
 =back
 

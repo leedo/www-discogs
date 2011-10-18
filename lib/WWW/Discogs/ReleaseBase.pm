@@ -65,8 +65,8 @@ sub extraartists {
 }
 
 sub tracklist {
-    # implement in inheriting classes
-    croak "Abstract method 'tracklist' called";
+    my $self = shift;
+    return @{ $self->{_tracklist} };
 }
 
 1;

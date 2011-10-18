@@ -45,27 +45,6 @@ sub released_formatted {
     return $self->{_released_fmt};
 }
 
-sub tracklist {
-    my ($self) = shift;
-
-    if (!wantarray) {
-        my $tracklist;
-        foreach my $track (@{ $self->{_tracklist} }) {
-            $tracklist .= sprintf(
-                "%s\n",
-                join(
-                    "\t",
-                    $track->{position},
-                    $track->{title},
-                    $track->{duration},
-                ));
-        }
-        return $tracklist;
-    }
-
-    return @{ $self->{_tracklist} };
-}
-
 sub labels {
     my $self = shift;
     return @{ $self->{_labels} };

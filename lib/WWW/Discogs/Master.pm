@@ -34,23 +34,4 @@ sub main_release {
     return $self->{_main_release};
 }
 
-sub tracklist {
-    my $self = shift;
-
-    if (!wantarray) {
-        my $tracklist;
-        foreach my $track (@{ $self->{_tracklist} }) {
-            $tracklist .= sprintf(
-                "%s\n",
-                join("\t",
-                     $track->{title},
-                     $track->{duration}
-                ));
-        }
-        return $tracklist;
-    }
-
-    return @{ $self->{_tracklist} };
-}
-
 1;

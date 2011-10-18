@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use NEXT;
 use base qw( WWW::Discogs::HasMedia );
+use Carp;
 
 sub new {
     my ($class, @args) = @_;
@@ -36,6 +37,11 @@ sub name {
 
 sub releases {
     my $self = shift;
+    unless ($self->{_params}->{releases}) {
+        carp "No releases fetched for label '" . $self->{_name} .
+            "'. Call 'label' method with releases => 1 param."
+    }
+
     return @{ $self->{_releases} };
 }
 

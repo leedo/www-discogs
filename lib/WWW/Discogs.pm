@@ -31,6 +31,9 @@ for (@namespaces) {
         use $pkg;
 
         sub $name {
+            Carp::croak
+                "Params for '$name' should be key/value pairs, not hash ref"
+                if ref(\$_[1]) eq 'HASH';
             my (\$self, \%args) = \@_;
             my \$id = \$args{id} || \$args{name} || '';
             my \$query_params = \$self->_get_query_params('$name', \%args);
@@ -56,7 +59,7 @@ for (@namespaces) {
         1;
     };
 
-    croak "Cannot create namespace $name: $@\n" if not $namespace;
+    Carp::croak "Cannot create namespace $name: $@\n" if not $namespace;
 }
 
 sub _get_query_params {
@@ -112,7 +115,7 @@ sub _request {
     my $url = $uri->canonical->as_string;
     my $res = $self->{ua}->get($url);
 
-    croak join(
+    Carp::croak join(
         "\n",
         "Request to $url failed: ",
         $res->status_line, Dumper($res)
@@ -133,7 +136,7 @@ WWW::Discogs - get music related information and images
 =head1 DESCRIPTION
 
 Interface with www.discogs.com API to get music related information and
-images. Discogs is a user-built database containing information on artists, 
+images. Discogs is a user-built database containing information on artists,
 labels, and their recordings.
 
 =cut
@@ -275,7 +278,8 @@ Returns title of the release.
 =item $release->images( type => $image_type )
 
 Returns a list of hash references containing information about images for a
-release. C< $image_type > can be one of 'primary' or 'secondary'. See example below:
+release. C< $image_type > can be one of 'primary' or 'secondary'.
+See example below:
 
   use WWW::Discogs;
   
@@ -284,7 +288,7 @@ release. C< $image_type > can be one of 'primary' or 'secondary'. See example be
   
   for my $img ( $release->images(type => 'primary') ) {
       print join(" - ",
-                 $img->{width}, $img->{height}, $img->{uri}, 
+                 $img->{width}, $img->{height}, $img->{uri},
                  $img->{uri150}, $img->{type},
           );
       print "\n";
@@ -292,7 +296,7 @@ release. C< $image_type > can be one of 'primary' or 'secondary'. See example be
 
 =item $release->released
 
-Returns release date in ISO 8601 format (YYYY-MM-DD). 
+Returns release date in ISO 8601 format (YYYY-MM-DD).
 
 =item $release->released_formatted
 
@@ -345,7 +349,7 @@ Returns status.
 
 =item $release->master_id
 
-Returns master release ID associated with a release. 
+Returns master release ID associated with a release.
 
 =item $release->year
 
@@ -402,7 +406,7 @@ Returns tracklist as a list containing hash references. See example below:
   
   my @tracklist = $release->tracklist;
   for my $track (sort { $a->{position} <=> $b->{position} } @tracklist) {
-      printf("%d. %s (%s)\n", 
+      printf("%d. %s (%s)\n",
              $track->{position}, $track->{title}, $track->{duration},
           );
   }
@@ -461,7 +465,7 @@ See example below:
   
   for my $img ( $master->images(type => 'secondary') ) {
       print join(" - ",
-               $img->{width}, $img->{height}, $img->{uri}, 
+               $img->{width}, $img->{height}, $img->{uri},
                $img->{uri150}, $img->{type},
           );
       print "\n";
@@ -596,7 +600,7 @@ containing releases information. See example below:
   my $label = $client->label(name => 'Southsoul Appendix', releases => 1);
   
   for my $r ($label->releases) {
-      print join("\t", $r->{id}, $r->{catno}, $r->{artist}, 
+      print join("\t", $r->{id}, $r->{catno}, $r->{artist},
                  $r->{title}, $r->{format}
           );
       print "\n";

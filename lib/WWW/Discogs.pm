@@ -140,6 +140,49 @@ labels, and their recordings.
 
 =head1 SYNOPSIS
 
+  use WWW::Discogs;
+  
+  my $client = WWW::Discogs->new;
+  
+  # --
+  # print all vinyl (12") releases from label 'Drumcode'
+  # --
+  my $label = $client->label(name => 'Drumcode', releases => 1);
+  my @vinyls = grep { $_->{format} =~ /12\"/ } $label->releases;
+  
+  for my $rel (@vinyls) {
+      print join("\t",
+                 $rel->{catno},
+                 $rel->{artist},
+                 $rel->{title},
+                 $rel->{format},
+          );
+      print "\n";
+  }
+  
+  # --
+  # print all covers for records by Nima Khak
+  # --
+  my @all_rels = $client->artist(name => 'Nima Khak', releases => 1)->releases;
+  my @main_rels = grep { $_->{role} eq 'Main' } @all_rels;
+  
+  RELEASE:
+  for my $r (@main_rels) {
+      my $release;
+  
+      if ($r->{type} eq 'master') {
+          my $master = $client->master(id => $r->{id});
+          $release = $client->release(id => $master->main_release);
+      }
+      elsif ($r->{type} eq 'release') {
+          $release = $client->release(id => $r->{id});
+      }
+  
+      my @images = $release->images(type => 'primary');
+      next RELEASE unless scalar(@images);
+      print join("\t", $release->title, $images[0]->{uri}), "\n";
+  }
+
 =head1 METHODS
 
 =head2 search( q => $search_string )
@@ -183,14 +226,22 @@ from a search result's title.
 
 =head2 WWW::Discogs::Search
 
-TODO: search example
-
 =over
 
 =item $search->exactresults
 
 Returns list of hash references containing results exactly matching search
-query.
+query. See example below:
+
+  use WWW::Discogs;
+  
+  my $client = WWW::Discogs->new;
+  my $search = $client->search(q => 'adam beyer');
+  
+  for my $result ($search->exactresults) {
+      print join(" - ", $result->{type}, $result->{title}, $result->{uri});
+      print "\n";
+  }
 
 =item $search->searchresults
 
@@ -232,12 +283,12 @@ release. C< $image_type > can be one of 'primary' or 'secondary'. See example be
   my $release = $client->release(id => 797674);
   
   for my $img ( $release->images(type => 'primary') ) {
-      printf("%3d x %3d - %s\n", $img->{width}, $img->{height}, $img->{uri});
+      print join(" - ",
+                 $img->{width}, $img->{height}, $img->{uri}, 
+                 $img->{uri150}, $img->{type},
+          );
+      print "\n";
   }
-
-Prints:
-
-  600 x 525 - http://api.discogs.com/image/R-797674-1309319643.jpeg
 
 =item $release->released
 
@@ -258,13 +309,8 @@ See example below:
   my $release = $client->release(id => 797674);
   
   for my $label ($release->labels) {
-      printf("%s - %s\n", $label->{name}, $label->{catno});
+      print join(" - ", $label->{name}, $label->{catno});
   }
-
-Prints:
-
-  Poker Flat Recordings - PFRCD18
-  Rough Trade Arvato - RTD 586.1018.2
 
 =item $release->country
 
@@ -321,19 +367,45 @@ Returns a list of genres.
 
 Returns a list of hash references containing artists information.
 
-TODO: example
+  use WWW::Discogs;
+  
+  my $client = WWW::Discogs->new;
+  my $release = $client->release(id => 18618);
+  
+  for my $artist ($release->artists) {
+      print join(" - ", $artist->{name}, $artist->{anv}, $artist->{role});
+      print "\n";
+  }
 
 =item $release->extraartists
 
 Returns a list of hash references containing extra artists information.
 
-TODO: example
+  use WWW::Discogs;
+  
+  my $client = WWW::Discogs->new;
+  my $release = $client->release(id => 18618);
+  
+  for my $exart ($release->extraartists) {
+      print join(" - ", $exart->{name}, $exart->{anv}, $exart->{role});
+      print "\n";
+  }
 
 =item $release->tracklist
 
-Returns tracklist.
+Returns tracklist as a list containing hash references. See example below:
 
-TODO: document!
+  use WWW::Discogs;
+  
+  my $client = WWW::Discogs->new;
+  my $release = $client->release(id => 830189);
+  
+  my @tracklist = $release->tracklist;
+  for my $track (sort { $a->{position} <=> $b->{position} } @tracklist) {
+      printf("%d. %s (%s)\n", 
+             $track->{position}, $track->{title}, $track->{duration},
+          );
+  }
 
 =back
 
@@ -365,7 +437,6 @@ below:
              $version->{format}, $version->{catno}, $version->{label});
   }
 
-
 Prints:
 
    116934  Sweden   Chaos & Order          CD, Album  HPCD20 H. Productions
@@ -388,13 +459,13 @@ See example below:
   my $client = WWW::Discogs->new;
   my $master = $client->master(id => 23992);
   
-  for my $img ( $master->images(type => 'primary') ) {
-      printf("%3d x %3d - %s\n", $img->{width}, $img->{height}, $img->{uri});
+  for my $img ( $master->images(type => 'secondary') ) {
+      print join(" - ",
+               $img->{width}, $img->{height}, $img->{uri}, 
+               $img->{uri150}, $img->{type},
+          );
+      print "\n";
   }
-
-Prints:
-
-  600 x 600 - http://api.discogs.com/image/R-830189-1265162680.jpeg
 
 =item $master->year
 
@@ -415,20 +486,16 @@ Returns a list of genres.
 =item $master->artists
 
 Returns a list of hash references containing artists information.
-
-TODO: example
+See C<< $release->artists >> for an example.
 
 =item $master->extraartists
 
 Returns a list of hash references containing extra artists information.
-
-TODO: example
+See C<< $release->extraartists >> for an example.
 
 =item $master->tracklist
 
-Returns tracklist.
-
-TODO: document!
+Returns tracklist. See C<< $release->tracklist >> for an example.
 
 =back
 
@@ -459,6 +526,11 @@ Returns artist's profile information.
 =item $artist->urls
 
 Returns a list of site's URLs linked to the artist.
+
+=item $artist->images
+
+Returns a list of hash references containing images information. See
+C<< $release->images >> for an example.
 
 =item $artist->releases
 
@@ -524,19 +596,11 @@ containing releases information. See example below:
   my $label = $client->label(name => 'Southsoul Appendix', releases => 1);
   
   for my $r ($label->releases) {
-      printf("%8d %11s %25s %10s %s\n", 
-             $r->{id}, $r->{catno}, $r->{artist}, $r->{title}, $r->{format});
+      print join("\t", $r->{id}, $r->{catno}, $r->{artist}, 
+                 $r->{title}, $r->{format}
+          );
+      print "\n";
   }
-
-Prints:
-
-    31391 SUDAPPX 001               Markantonio Appendix A 12"
-    31392 SUDAPPX 002          Davide Squillace Appendix B 12"
-    33698 SUDAPPX 003              Marco Carola Appendix C 12"
-    75142 SUDAPPX 004           Danilo Vigorito Appendix D 12"
-  2281344 SUDAPPX 004           Danilo Vigorito Appendix D 12", W/Lbl, Sti
-   176859 SUDAPPX 005     Adam Beyer & Henrik B Appendix E 12"
-   332559 SUDAPPX 006           Carola Pisaturo Appendix F 12"
 
 =item $label->contactinfo
 

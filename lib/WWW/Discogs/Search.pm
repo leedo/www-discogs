@@ -34,7 +34,7 @@ sub exactresults {
 
 sub searchresults {
     my $self = shift;
-    return @{ $self->{_searchresults}->{results} };
+    return @{ $self->{_searchresults}->{_results} };
 }
 
 sub numresults {

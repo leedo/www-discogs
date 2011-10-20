@@ -5,19 +5,20 @@ use Test::More tests => 6;
 
 BEGIN { use_ok 'WWW::Discogs' }
 
-my $apikey = '5b4bea98ec';
-
-my $discogs = WWW::Discogs->new(apikey => $apikey);
+my $discogs = WWW::Discogs->new;
 is(ref $discogs, 'WWW::Discogs', "client");
 
-my $res = $discogs->_request('search',{q => 'Ween', type => 'all'});
+my $res = $discogs->_request(
+    path => 'search',
+    query => { q => 'adam beyer', type => 'artist' } 
+);
 is($res->code, 200, "search");
 
-$res = $discogs->_request('release/1');
+$res = $discogs->_request(path => 'release/1');
 is($res->code, 200, "release");
 
-$res = $discogs->_request('artist/Ween');
+$res = $discogs->_request(path => 'artist/Ween', query => { releases => 1} );
 is($res->code, 200, "artist");
 
-$res = $discogs->_request('label/Svek');
+$res = $discogs->_request(path => 'label/Svek', query => { releases => 1} );
 is($res->code, 200, "label");

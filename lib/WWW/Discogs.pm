@@ -131,15 +131,11 @@ __END__
 
 WWW::Discogs - get music related information and images
 
-=cut
-
 =head1 DESCRIPTION
 
 Interface with www.discogs.com API to get music related information and
 images. Discogs is a user-built database containing information on artists,
 labels, and their recordings.
-
-=cut
 
 =head1 SYNOPSIS
 

@@ -13,15 +13,16 @@ inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
 lib/WWW/Discogs.pm
 lib/WWW/Discogs/Artist.pm
+lib/WWW/Discogs/HasMedia.pm
 lib/WWW/Discogs/Label.pm
 lib/WWW/Discogs/Master.pm
 lib/WWW/Discogs/Release.pm
+lib/WWW/Discogs/ReleaseBase.pm
 lib/WWW/Discogs/Search.pm
 Makefile.PL
 MANIFEST			This list of files
 META.yml
 README
-t/01makeurl.t
 t/02request.t
 t/03release.t
 t/04artist.t

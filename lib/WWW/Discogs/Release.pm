@@ -2,178 +2,72 @@ package WWW::Discogs::Release;
 
 use strict;
 use warnings;
-
-=head1 NAME
-
-WWW::Discogs::Release - get music release information and images
-
-=head1 METHODS
-
-=cut
+use NEXT;
+use base qw( WWW::Discogs::ReleaseBase );
 
 sub new {
-	my ($class, %opts) = @_;
-	bless \%opts, $class;
+    my ($class, @args) = @_;
+
+    my $self = {};
+    bless $self, $class;
+    $self->EVERY::LAST::_init(@args);
+
+    return $self;
 }
 
-=head2 title
+sub _init {
+    my ($self, %args) = @_;
 
-returns the title
+    $self->{_title}        = $args{title}              || '';
+    $self->{_released}     = $args{released}           || '';
+    $self->{_released_fmt} = $args{released_formatted} || '';
+    $self->{_country}      = $args{country}            || '';
+    $self->{_status}       = $args{status}             || '';
+    $self->{_master_id}    = $args{master_id}          || '';
+    $self->{_formats}      = $args{formats}            || [];
+    $self->{_labels}       = $args{labels}             || [];
 
-=cut
+    return $self;
+}
+
 sub title {
-	my $self = shift;
-	return $self->{title};
+    my $self = shift;
+    return $self->{_title};
 }
 
-=head2 artists
-
-returns a list of artist names
-
-=cut
-sub artists {
-	my $self = shift;
-	return @{ $self->{artists}{artist} };
-}
-
-
-=head2 images
-
-Returns a list of images
-
-=cut
-sub images {
-	my $self = shift;
-	return @{ $self->{images}{image} };
-}
-
-=head2 primary_images
-
-Returns a list of the primary images
-
-=cut
-sub primary_images {
-	my $self = shift;
-	return grep {$_->{type} eq 'primary'} @{$self->{images}{image}};
-}
-
-=head2 secondary_images
-
-returns a list of the secondary images
-
-=cut
-sub secondary_images {
-	my $self = shift;
-	return grep {$_->{type} eq 'secondary'} @{$self->{images}{image}};
-}
-
-=head2 styles
-
-returns a list of styles
-
-=cut
-sub styles {
-	my $self = shift;
-	if($self->{styles}{style} && ref($self->{styles}{style}) eq 'ARRAY')
-	{
-		return @{ $self->{styles}{style} };	
-	}
-	else
-	{
-		return $self->{styles}{style};
-	}
-
-}
-
-=head2 released
-
-returns the date
-
-=cut
 sub released {
-	my $self = shift;
-	return $self->{released};
+    my $self = shift;
+    return $self->{_released};
 }
 
-=head2 tracklist
-
-returns a list of tracks
-
-=cut
-sub tracklist {
-	my $self = shift;
-	return @{ $self->{tracklist}{track} };
+sub released_formatted {
+    my $self = shift;
+    return $self->{_released_fmt};
 }
 
-=head2 extraartists
-
-returns a list of artists
-
-=cut
-sub extraartists {
-	my $self = shift;
-	return @{ $self->{extraartists}{artist} };
-}
-
-=head2 genres
-
-returns a list of genre names
-
-=cut
-sub genres {
-	my $self = shift;
-	return @{ $self->{genres}{genre} };
-}
-
-=head2 labels
-
-returns a list of labels
-
-=cut
 sub labels {
-	my $self = shift;
-	return @{ $self->{labels}{label} };
+    my $self = shift;
+    return @{ $self->{_labels} };
 }
 
-
-=head2 country
-
-Returns the country
-
-=cut
 sub country {
-	my $self = shift;
-	return $self->{country};
+    my $self = shift;
+    return $self->{_country};
 }
 
-=head2 formats
-
-returns a list of formats
-
-=cut
 sub formats {
-	my $self = shift;
-	return map {$_->{name}} @{$self->{formats}{format}};
+    my $self = shift;
+    return @{ $self->{_formats} };
 }
 
-=head2 id
-
-returns the discogs ID for the album
-
-=cut
-sub id {
-	my $self = shift;
-	return $self->{id};
+sub status {
+    my $self = shift;
+    return $self->{_status};
 }
 
-=head2 notes
-
-returns a list of notes
-
-=cut
-sub notes {
-	my $self = shift;
-	return @{ $self->{notes} };
+sub master_id {
+    my $self = shift;
+    return $self->{_master_id};
 }
 
 1;

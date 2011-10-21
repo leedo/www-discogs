@@ -2,91 +2,76 @@ package WWW::Discogs::Artist;
 
 use strict;
 use warnings;
+use NEXT;
+use base qw( WWW::Discogs::HasMedia );
+use Carp;
 
 sub new {
-	my ($class, %opts) = @_;
-	bless \%opts, $class;
+    my ($class, @args) = @_;
+
+    my $self = {};
+    bless $self, $class;
+    $self->EVERY::LAST::_init(@args);
+
+    return $self;
 }
 
-=head1 NAME
+sub _init {
+    my ($self, %args) = @_;
 
-WWW::Discogs::Artist - get musician information and images
+    $self->{_name}           = $args{name}           || '';
+    $self->{_realname}       = $args{realname}       || '';
+    $self->{_profile}        = $args{profile}        || '';
+    $self->{_aliases}        = $args{aliases}        || [];
+    $self->{_namevariations} = $args{namevariations} || [];
+    $self->{_urls}           = $args{urls}           || [];
+    $self->{_releases}       = $args{releases}       || [];
+    $self->{_params}         = $args{_params}        || {};
+    $self->{_uri}            = $args{_uri}           || '';
 
-=cut
+    return $self;
+}
 
-=head1 METHODS
-
-=cut
-
-=head2 name
-
-returns the name of the artist
-
-=cut
 sub name {
-	my $self = shift;
-	return $self->{name}[0];
+    my $self = shift;
+    return $self->{_name};
 }
 
-=head2 aliases
+sub realname {
+    my $self = shift;
+    return $self->{_realname};
+}
 
-returns a list of aliases
-
-=cut
 sub aliases {
-	my $self = shift;
-	return @{ $self->{aliases}{name} };
+    my $self = shift;
+    return @{ $self->{_aliases} };
 }
 
-
-=head2 namevariations
-
-returns a list of name variations
-
-=cut
 sub namevariations {
-	my $self = shift;
-	return @{ $self->{namevariations}{name} };
+    my $self = shift;
+    return @{ $self->{_namevariations} };
 }
 
-=head2 images
-
-returns a list of images
-
-=cut
-sub images {
-	my $self = shift;
-	return @{ $self->{images}{image} };
+sub profile {
+    my $self = shift;
+    return $self->{_profile};
 }
 
-=head2 primary_images
-
-returns a list of primary images
-
-=cut
-sub primary_images {
-	my $self = shift;
-	return grep {$_->{type} eq 'primary'} @{$self->{images}{image}};
+sub urls {
+    my $self = shift;
+    return @{ $self->{_urls} };
 }
 
-=head2 secondary_images
-
-returns a list of secondary images
-
-=cut
-sub secondary_images {
-	my $self = shift;
-	return grep {$_->{type} eq 'secondary'} @{$self->{images}{image}};
-}
-
-=head2 releases
-
-returns a list of releases
-
-=cut
 sub releases {
-	my $self = shift;
-	return @{ $self->{releases}{release} };
+    my $self = shift;
+    unless ($self->{_params}->{releases}) {
+        carp "No releases fetched for artist '" . $self->{_name} .
+            "'. Call 'artist' method with releases => 1 param."
+    }
+
+    return @{ $self->{_releases} };
 }
 
 1;
+
+__END__

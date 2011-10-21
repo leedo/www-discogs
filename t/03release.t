@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More tests => 20;
 
-BEGIN { use_ok 'WWW::Discogs', 'WWW::Discogs::Release' }
+BEGIN { use_ok 'WWW::Discogs' }
 
 my $discogs = WWW::Discogs->new;
 is(ref $discogs, 'WWW::Discogs', "client");

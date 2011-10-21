@@ -1,11 +1,10 @@
-#!perl
 use strict;
 use warnings;
 
 use Test::More tests => 11;
 use Test::Deep;
 
-BEGIN { use_ok 'WWW::Discogs', 'WWW::Discogs::Artist' }
+BEGIN { use_ok 'WWW::Discogs' }
 
 my $discogs = WWW::Discogs->new;
 is(ref $discogs, 'WWW::Discogs', 'client');

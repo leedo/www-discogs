@@ -1,8 +1,5 @@
 .shipit
 Changes
-ex/get_albumart.pl
-ex/get_artistart.pl
-ex/search_artists.pl
 inc/Module/Install.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
@@ -28,3 +25,4 @@ t/03release.t
 t/04artist.t
 t/05label.t
 t/06search.t
+t/07master.t

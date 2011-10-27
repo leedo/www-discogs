@@ -6,7 +6,7 @@ use HTTP::Response;
 use FindBin qw( $Bin );
 use File::Slurp qw( read_file );
 
-use Test::More tests => 9;
+use Test::More tests => 10;
 use Test::Deep;
 
 BEGIN { use_ok 'WWW::Discogs' }
@@ -15,11 +15,10 @@ my $rt = read_file("$Bin/../requests/label.res");
 my $response = HTTP::Response->parse($rt);
 $mock_ua->map('http://api.discogs.com/label/Svek?releases=1', $response);
 
-my $discogs = WWW::Discogs->new;
-is(ref $discogs, 'WWW::Discogs', 'client');
-
-my $label = $discogs->label(name => 'Svek', releases => 1);
-is(ref $label, 'WWW::Discogs::Label', 'label');
+my $client = new_ok('WWW::Discogs' => [], '$client');
+my $label = $client->label(name => 'Svek', releases => 1);
+isa_ok($label, 'WWW::Discogs::Label', '$label');
+isa_ok($label, 'WWW::Discogs::HasMedia', '$label');
 
 like($label->contactinfo, qr/^Svek office/, 'contactinfo');
 is($label->parentlabel, 'Goldhead Music', 'parentlabel');

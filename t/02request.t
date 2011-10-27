@@ -10,7 +10,7 @@ is(ref $discogs, 'WWW::Discogs', "client");
 
 my $res = $discogs->_request(
     path => 'search',
-    query => { q => 'adam beyer', type => 'artist' } 
+    query => { q => 'adam beyer', type => 'artist' }
 );
 is($res->code, 200, "search");
 

@@ -1,10 +1,19 @@
 use strict;
 use warnings;
 
+use Test::Mock::LWP::Dispatch;
+use HTTP::Response;
+use FindBin qw( $Bin );
+use File::Slurp qw( read_file );
+
 use Test::More tests => 13;
 use Test::Deep;
 
 BEGIN { use_ok 'WWW::Discogs' }
+
+my $rt = read_file("$Bin/../requests/master.res");
+my $response = HTTP::Response->parse($rt);
+$mock_ua->map('http://api.discogs.com/master/23992', $response);
 
 my $discogs = WWW::Discogs->new;
 is(ref $discogs, 'WWW::Discogs', 'client');

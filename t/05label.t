@@ -1,10 +1,19 @@
 use strict;
 use warnings;
 
+use Test::Mock::LWP::Dispatch;
+use HTTP::Response;
+use FindBin qw( $Bin );
+use File::Slurp qw( read_file );
+
 use Test::More tests => 9;
 use Test::Deep;
 
-BEGIN { use_ok 'WWW::Discogs', 'WWW::Discogs::Label' }
+BEGIN { use_ok 'WWW::Discogs' }
+
+my $rt = read_file("$Bin/../requests/label.res");
+my $response = HTTP::Response->parse($rt);
+$mock_ua->map('http://api.discogs.com/label/Svek?releases=1', $response);
 
 my $discogs = WWW::Discogs->new;
 is(ref $discogs, 'WWW::Discogs', 'client');

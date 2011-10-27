@@ -17,11 +17,9 @@ $mock_ua->map(
     $response
 );
 
-my $discogs = WWW::Discogs->new;
-is(ref $discogs, 'WWW::Discogs', 'client');
-
-my $search = $discogs->search(q => 'Ween');
-is(ref $search, 'WWW::Discogs::Search', 'search');
+my $client = new_ok('WWW::Discogs' => [], '$client');
+my $search = $client->search(q => 'Ween');
+isa_ok($search, 'WWW::Discogs::Search', '$search');
 
 for ($search->exactresults) {
     if ($_->{title} eq 'Ween') {

@@ -19,6 +19,11 @@ lib/WWW/Discogs/Search.pm
 Makefile.PL
 MANIFEST			This list of files
 META.yml
+requests/artist.res
+requests/label.res
+requests/master.res
+requests/release.res
+requests/search.res
 README
 t/02request.t
 t/03release.t

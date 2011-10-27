@@ -18,7 +18,7 @@ DEPENDENCIES
 This module requires these other modules and libraries:
 
   LWP::UserAgent, URI, URI::Escape, Carp, JSON::XS, Data::Dumper,
-  Test::Deep
+  Test::Deep, Test::Mock::LWP::Dispatch, File::Slurp
 
 COPYRIGHT AND LICENCE
 

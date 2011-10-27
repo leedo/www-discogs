@@ -529,6 +529,8 @@ Returns a list of site's URLs linked to the artist.
 
 =item $artist->images
 
+=item $artist->images( type => $image_type )
+
 Returns a list of hash references containing images information. See
 C<< $release->images >> for an example.
 
@@ -613,6 +615,13 @@ Returns a list containing names of sublabels.
 =item $label->parentlabel
 
 Returns the name of parent label.
+
+=item $label->images
+
+=item $label->images( type => $images_type)
+
+Returns a list of hash references containing images information. See
+C<< $release->images >> for an example.
 
 =back
 

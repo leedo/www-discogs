@@ -37,3 +37,11 @@ Revision history for Perl extension WWW::Discogs.
 
 0.10
   - fixed test failure in artist response (squeeks)
+
+0.11
+  - major update of the module to work with Discogs APIv2
+  - communication with API switched from XML to JSON
+  - all tests are now executed in offline mode
+  - rewritten documentation
+  - interface changes
+  - support for master releases added

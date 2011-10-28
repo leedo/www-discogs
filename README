@@ -1,4 +1,4 @@
-WWW-Discogs version 0.02
+WWW-Discogs version 0.11
 ============================
 
 This module will let you connect to discogs.com to gather information
@@ -17,8 +17,8 @@ DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-  LWP::UserAgent, URI, URI::Escape, Carp, JSON::XS, Data::Dumper,
-  Test::Deep, Test::Mock::LWP::Dispatch, File::Slurp, Test::Exception
+  LWP::UserAgent, URI, URI::Escape, JSON::XS, NEXT, Test::Deep,
+  Test::Mock::LWP::Dispatch, File::Slurp, Test::Exception
 
 COPYRIGHT AND LICENCE
 

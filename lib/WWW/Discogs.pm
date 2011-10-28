@@ -11,7 +11,7 @@ use JSON::XS;
 use Data::Dumper;
 
 use 5.008;
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 our @namespaces = qw ( Artist Release Label Search Master );
 

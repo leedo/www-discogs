@@ -10,8 +10,8 @@ use File::Slurp qw( read_file );
 use Test::More tests => 33;
 use Test::Exception;
 
-BEGIN { 
-    use_ok 'WWW::Discogs'; 
+BEGIN {
+    use_ok 'WWW::Discogs';
     use_ok 'WWW::Discogs::HasMedia';
     use_ok 'WWW::Discogs::ReleaseBase';
 }

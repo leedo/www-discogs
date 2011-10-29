@@ -17,8 +17,7 @@ DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-  LWP::UserAgent, URI, URI::Escape, JSON::XS, NEXT, Test::Deep,
-  Test::Mock::LWP::Dispatch, File::Slurp, Test::Exception
+  LWP::UserAgent, URI, URI::Escape, JSON::XS, NEXT
 
 COPYRIGHT AND LICENCE
 

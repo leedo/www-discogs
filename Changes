@@ -45,3 +45,6 @@ Revision history for Perl extension WWW::Discogs.
   - rewritten documentation
   - interface changes
   - support for master releases added
+
+0.12
+  - set user agent to module name

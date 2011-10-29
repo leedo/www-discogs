@@ -11,7 +11,7 @@ use JSON::XS;
 use Data::Dumper;
 
 use 5.008;
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 our @namespaces = qw ( Artist Release Label Search Master );
 
@@ -105,6 +105,7 @@ sub _init {
     my ($self, %args) = @_;
     $self->{apiurl} = $args{apiurl} || 'http://api.discogs.com';
     $self->{ua} = LWP::UserAgent->new;
+    $self->{ua}->agent("WWW-Discogs/$VERSION +perl");
     $self->{ua}->default_header(
         'Accept-Encoding' => 'gzip, deflate',
         );
@@ -639,7 +640,7 @@ C<< $release->images >> for an example.
 
 =head1 AUTHOR
 
-0.11: Michal Gasek <michal@gasek.eu>
+0.11+: Michal Gasek <michal@gasek.eu>
 
 0.01-0.10: Lee Aylward <lee@laylward.com>
 

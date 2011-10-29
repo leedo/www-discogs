@@ -637,6 +637,12 @@ C<< $release->images >> for an example.
 
 =back
 
+=head1 AUTHOR
+
+0.11: Michal Gasek <michal@gasek.eu>
+
+0.01-0.10: Lee Aylward <lee@laylward.com>
+
 =head1 LICENSE
 
 This library is free software, you can redistribute it and/or modify

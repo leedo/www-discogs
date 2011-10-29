@@ -11,7 +11,7 @@ use JSON::XS;
 use Data::Dumper;
 
 use 5.008;
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 our @namespaces = qw ( Artist Release Label Search Master );
 
@@ -636,6 +636,12 @@ Returns a list of hash references containing images information. See
 C<< $release->images >> for an example.
 
 =back
+
+=head1 AUTHOR
+
+0.11: Michal Gasek <michal@gasek.eu>
+
+0.01-0.10: Lee Aylward <lee@laylward.com>
 
 =head1 LICENSE
 

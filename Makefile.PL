@@ -6,7 +6,7 @@ WriteMakefile(
     ABSTRACT_FROM => 'lib/WWW/Discogs.pm',
     AUTHOR => 'Michal Gasek <michal@gasek.eu>',
     LICENSE => 'perl',
-    MIN_PERL_VERSION => '5.8',
+    MIN_PERL_VERSION => '5.008',
     PREREQ_PM => {
         'LWP::UserAgent' => 0,
         'URI' => 0,

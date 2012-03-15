@@ -48,3 +48,7 @@ Revision history for Perl extension WWW::Discogs.
 
 0.12
   - set user agent to module name
+
+0.13
+  - fixed RT #72393 - Wrong MIN_PERL_VERSION
+    specification (srezic)

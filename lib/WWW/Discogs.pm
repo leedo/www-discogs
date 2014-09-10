@@ -34,19 +34,17 @@ for (@namespaces) {
                 "Params for '$name' should be key/value pairs, not hash ref"
                 if ref(\$_[1]) eq 'HASH';
             my (\$self, \%args) = \@_;
-            my \$id = \$args{id} || \$args{name} || '';
+            my \$id = \$args{id} || '';
 
             Carp::croak "Call to '$name' missing required arguments."
                 if !\$id && '$name' =~ /artist|release|label|master/;
             Carp::croak "id value for '$name' not a number"
-                if '$name' =~ /master|release/ && \$id !~ /^\\d+\$/;
-            Carp::croak "name value incorrect for '$name'"
-                if '$name' =~ /artist|label/ && \$id =~ /^\\s*\$/;
+                if '$name' =~ /artist|release|label|master/ && \$id !~ /^\\d+\$/;
 
             my \$query_params = \$self->_get_query_params('$name', \%args);
 
             my \$res = \$self->_request(
-                path     => (\$id =~ /^\\s*\$/) ? '$name' : '$name'."/\$id",
+                path     => '$name'."s/\$id",
                 query    => \$query_params,
                 );
 

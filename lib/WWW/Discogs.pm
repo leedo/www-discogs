@@ -49,14 +49,12 @@ for (@namespaces) {
                 );
 
             my \$json = JSON::XS::decode_json( \$res->decoded_content );
-            my \$class_data = \$json->{resp}->{'$name'};
+            my \$class_data = \$json;
             \$class_data->{_uri} = \$res->base;
             \$class_data->{_params} = \$query_params;
 
-            if (\$json->{resp}->{status} == JSON::XS::true &&
-                defined \$json->{resp}->{'$name'}) {
-                return $pkg->new(\%{\$class_data});
-            }
+            return $pkg->new(\%{\$class_data});
+
 
             return undef;
         }

@@ -16,9 +16,9 @@ our $VERSION = '0.14-devel';
 our @namespaces = qw ( Artist Release Label Master );
 
 my %query_params  = (
-    artist  => { releases => 0, },
+    artist  => { },
     release => { },
-    label   => { releases => 0, },
+    label   => { },
     master  => { },
     );
 

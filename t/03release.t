@@ -43,8 +43,8 @@ is_deeply($rel->labels,
               name         => 'Svek',
               catno        => 'SK032',
               entity_type  => 1,
-	      resource_url => 'http://api.discogs.com/labels/5',
-	      id           => 5,
+              resource_url => 'http://api.discogs.com/labels/5',
+              id           => 5,
           }, 'labels');
 
 for ($rel->tracklist) {
@@ -54,7 +54,7 @@ for ($rel->tracklist) {
                       position => 'B1',
                       title    => 'Vasastaden',
                       duration => '6:11',
-		      type_    => 'track',
+                      type_    => 'track',
                   }, 'tracklist');
     }
 }
@@ -66,8 +66,8 @@ is_deeply($rel->artists,
               anv          => '',
               role         => '',
               join         => '',
-	      resource_url => 'http://api.discogs.com/artists/1',
-	      id           => 1,
+              resource_url => 'http://api.discogs.com/artists/1',
+              id           => 1,
           }, 'artists');
 
 is_deeply($rel->extraartists,
@@ -77,8 +77,8 @@ is_deeply($rel->extraartists,
               anv          => '',
               role         => 'Music By [All Tracks By]',
               join         => '',
-	      resource_url => 'http://api.discogs.com/artists/239',
-	      id           => 239
+              resource_url => 'http://api.discogs.com/artists/239',
+              id           => 239
           }, 'extraartists');
 
 my @images = $rel->images(type => 'primary');

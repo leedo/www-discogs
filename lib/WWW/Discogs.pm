@@ -13,13 +13,12 @@ use Data::Dumper;
 use 5.008;
 our $VERSION = '0.14-devel';
 
-our @namespaces = qw ( Artist Release Label Search Master );
+our @namespaces = qw ( Artist Release Label Master );
 
 my %query_params  = (
     artist  => { releases => 0, },
     release => { },
     label   => { releases => 0, },
-    search  => { type => 'all', 'q' => '', page => '1', },
     master  => { },
     );
 
@@ -39,10 +38,6 @@ for (@namespaces) {
 
             Carp::croak "Call to '$name' missing required arguments."
                 if !\$id && '$name' =~ /artist|release|label|master/;
-            Carp::croak "No search query specified"
-                if '$name' eq 'search' && !exists \$args{q};
-            Carp::croak "Incorrect search query"
-                if '$name' eq 'search' && \$args{q} =~ /^\\s*\$/;
             Carp::croak "id value for '$name' not a number"
                 if '$name' =~ /master|release/ && \$id !~ /^\\d+\$/;
             Carp::croak "name value incorrect for '$name'"
